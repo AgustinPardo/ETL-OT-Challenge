@@ -12,15 +12,16 @@ Linux : https://www.tecmint.com/install-wget-in-linux/
 
 Mac : https://www.maketecheasier.com/install-wget-mac/
 
-## Get source code
+# Follow the next steps to get the source code, download data sets, and the enviromvent ready to run the application.
 
-#### Clone source code
-Execute:
+## 1) Get source code
+
+Clone source code. Execute:
 ```bash
 git clone https://github.com/AgustinPardo/OT-ETL-Challenge
 ```
 
-## Download data sets
+## 2) Download data sets
 
 Go to repository folder. Execute:
 ```bash
@@ -29,7 +30,7 @@ cd OT-ETL-Challenge
 
 ### 2 options:
 
-#### 1) Manually
+##### 1) Manually
 Create directories. Execute:
 ```bash
 data_dir=data
@@ -43,14 +44,14 @@ wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/disease
 wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/targets --accept='*.json' -r ftp://ftp.ebi.ac.uk/pub/databases/opentargets/platform/21.11/output/etl/json/targets/
 ```
 
-#### 2) Using download_datases.sh script
+##### 2) Using download_datases.sh script
 
 Add permisions. Execute:
 ```bash
 chmod 700 download_datases.sh
 ```
 
-Execute:
+Run script. Execute:
 ```bash
 ./download_datases.sh
 ```
@@ -58,17 +59,17 @@ Execute:
 This script is going to create a folder labeled "data" to get evidence, target and disease datasets. The execution will be a background paralell process for each dataset. On "data" folder you'll find logs for each dataset. In the logs you can check if all the files were sucessfully downloaded and if execution was done/finished. This could take beetween 20 to 40 minutes depending on the internet speed.
 
 
-To know if download datasets finish. On data folder execute:
+To know if download datasets finish. On "data" folder execute:
 ```bash
 grep -e "FINISHED" evidence.log targets.log diseases.log
 ```
 
-Check for donwload errors. On data folder execute:
+Check for donwload errors. On "data" folder execute:
 ```bash
 grep -e "error" -e "fail" evidence.log targets.log diseases.log | awk -F: '{print "Line "$1": "$2}'
 ```
 
-## Setting up environment
+## 3) Setting up environment
 On "OT-ETL-Challenge" folder. Execute:
 
 ##### 1) Create virtual environment. Execute:
@@ -85,7 +86,7 @@ source etl/bin/activate
 pip install -r requirement.txt
 ```
 
-## Running application
+## 4) Running application
 
 ##### Run main.py script
 
@@ -104,14 +105,12 @@ Get the result JSON file using 8 CPUs. Execute:
 python main.py -etl -n 8
 ```
 
-Count how many target-target pairs share a connection to at least two diseases. Execute:
+Count how many target-target pairs share a connection to at least two diseases using 8 CPUs Execute:
 ```bash
 python main.py -tt -n 8
 ```
 
-Get how many CPUs are available on your execution envirovment. Execute:
+Get how many CPUs are available on your execution environment. Execute:
 ```bash
 python main.py -nc
 ```
-
-
