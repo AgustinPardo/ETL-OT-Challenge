@@ -12,8 +12,13 @@ Linux : https://www.tecmint.com/install-wget-in-linux/
 
 Mac : https://www.maketecheasier.com/install-wget-mac/
 
-# Follow the next steps to get the source code, download data sets, and the enviromvent ready to run the application.
+#### Follow the next steps to get ready the to run the application:
+1 [Get source code](#1)
+2 [Download data sets](#2)
+3 [Setting up environment](#3)
+4 [Running application](#4)
 
+<a name="1"></a>
 ## 1) Get source code
 
 Clone source code. Execute:
@@ -25,7 +30,7 @@ Go to repository folder. Execute:
 ```bash
 cd OT-ETL-Challenge
 ```
-
+<a name="2"></a>
 ## 2) Download data sets
 
 ### 2 options:
@@ -68,8 +73,9 @@ Check for donwload errors. On "data" folder execute:
 ```bash
 grep -e "error" -e "fail" evidence.log targets.log diseases.log | awk -F: '{print "Line "$1": "$2}'
 ```
-
+<a name="3"></a>
 ## 3) Setting up environment
+
 On "OT-ETL-Challenge" folder. Execute:
 
 ##### 1) Create virtual environment. Execute:
@@ -86,7 +92,7 @@ source etl/bin/activate
 ```bash
 pip install -r requirement.txt
 ```
-
+<a name="4"></a>
 ## 4) Running application
 
 ##### Run main.py script
