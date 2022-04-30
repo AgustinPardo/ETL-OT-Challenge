@@ -4,21 +4,46 @@ import json
 import math
 from multiprocessing import Process, Queue, cpu_count
 
+
 class DataSet:
 
     def __init__(self, path, name, fields):
         self.path = path+"/"+name
         self.name = name
         self.fields = fields
-        self.df = None
+        self.df = pd.DataFrame
+
+
+class CPU:
+
+    def __init__(self, cpus_number):        
+        self.cpus = int(cpus_number)
+        self.check()
+
+    @staticmethod
+    def count_cpus():
+        "Count aviable cpus"
+        cpus = cpu_count()
+        return cpus
+
+    @staticmethod
+    def get_avaiable_cpus():
+        "Print avaiable cpus"
+        print(f"Avaiable CPUs: {CPU.count_cpus()}")
+
+    def check(self):
+        "Check if aviable cpus could handle requested cpus. If not use max cpus available"
+        if self.cpus > CPU.count_cpus():
+            self.cpus = CPU.count_cpus()
+
 
 class Parser:
 
-    def __init__(self, data_path):
-        self.path = data_path
-        self.evidence = DataSet(self.path, "evidence", ["targetId", "diseaseId", "score"])
-        self.target = DataSet(self.path, "targets", ["id", "approvedSymbol"])
-        self.disease = DataSet(self.path, "diseases", ["id", "name"])
+    def __init__(self, data_path, cpus_use):
+        self.evidence = DataSet(data_path, "evidence", ["targetId", "diseaseId", "score"])
+        self.target = DataSet(data_path, "targets", ["id", "approvedSymbol"])
+        self.disease = DataSet(data_path, "diseases", ["id", "name"])
+        self.cpus = CPU(cpus_use).cpus
 
     def get_data(self, path, files, queue, args):
         list_for_df = []
@@ -36,25 +61,25 @@ class Parser:
         queue.put(list_for_df)
 
     def parallel_get_data(self, path, files, args):
-        # Set number of CPUs
-        # num_workers = cpu_count()
-        num_cpus = 6
+
+        # Number of CPUs
+        num_cpus = self.cpus
 
         # Set a Queue to store each process result
         queue = Queue()
 
         # Set chunks to distributed over CPUs number
         num_files=len(files)
-        chunk_step=math.ceil(num_files/num_cpus)
+        chunk_step=math.ceil(num_files/self.cpus)
 
         for w in range(num_cpus):
-            left=chunk_step*w
-            right=chunk_step*(w+1)
-            if right>num_files:
-                right=num_files
-            process = Process(target=self.get_data, args=(path, files[left:right], queue, args))
+            chunk_l=chunk_step*w
+            chunk_r=chunk_step*(w+1)
+            if chunk_r>num_files:
+                chunk_r=num_files
+            process = Process(target=self.get_data, args=(path, files[chunk_l:chunk_r], queue, args))
             process.start()
-            right = left
+            chunk_r = chunk_l
 
         # Collect the queue results
         all_results = []
@@ -64,20 +89,24 @@ class Parser:
         return all_results
 
     def parse_data(self, dataset):
+
+        print(f"Reading {dataset.name} dataset")
         files = os.listdir(dataset.path)
         data = self.parallel_get_data(dataset.path, files, dataset.fields)
+        print(f"Parsing {dataset.name} dataset")
         dataset.df = pd.DataFrame(data)
 
     def prepare_evidence(self, dataset):
 
-        self.parse_data(dataset)
         # Calculate median score and 3 top scores per targetId and diseaseId pair
         print("Calculating median and 3 top scores of evidence data set")
         dataset.df = dataset.df.groupby(["targetId", "diseaseId"]).agg({"score": ['mean', lambda s: sorted(list(s), reverse=True)[:3]]}).reset_index()
-        columns_name =("targetId", 'diseaseId', 'median', 'top3')
+        columns_name =("targetId", 'diseaseId', 'median', 'top3_score')
         dataset.df.columns = list(map(''.join, columns_name))
 
     def transform_data(self):
+        print(f"CPUs in use: {self.cpus}")  
+        self.parse_data(self.evidence)
         self.prepare_evidence(self.evidence)
         self.parse_data(self.target)
         self.parse_data(self.disease)
@@ -102,21 +131,17 @@ class Parser:
 
     def target_target_pair(self):
 
+        # In case target-target pair option is run alone
         if self.evidence.df.empty:
-            self.prepare_evidence(self.evidence)
+            self.parse_data(self.evidence)
+            self.evidence.df = self.evidence.df.drop_duplicates(["targetId", "diseaseId"]).reset_index()       
 
-        # Join on targetID
+        # Join on targetId
         tt_pair = pd.merge(self.evidence.df, self.evidence.df, left_on="targetId", right_on="targetId")
 
         # Remove all the rows having same diseasesID
         tt_pair_dif_diseases = tt_pair[tt_pair["diseaseId_x"] != tt_pair["diseaseId_y"]]
 
+        # Count each pair and divide by two to avoid double count
         tt_pair_count = tt_pair_dif_diseases["targetId"].count() / 2
         print(f"Target-Target pair sharing connection with atleast two diseases {int(tt_pair_count)}")
-
-if __name__ == "__main__":
-
-    parser = Parser("data")
-    parser.transform_data()
-    parser.export_data('output.json')
-    parser.target_target_pair()
