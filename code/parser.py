@@ -2,8 +2,8 @@ import os
 import pandas as pd
 import json
 import math
-from multiprocessing import Process, Queue, cpu_count
-
+from multiprocessing import Process, Queue
+from code.cpu import CPU
 
 class DataSet:
 
@@ -12,29 +12,6 @@ class DataSet:
         self.name = name
         self.fields = fields
         self.df = pd.DataFrame
-
-
-class CPU:
-
-    def __init__(self, cpus_number):        
-        self.cpus = int(cpus_number)
-        self.check()
-
-    @staticmethod
-    def count_cpus():
-        "Count aviable cpus"
-        cpus = cpu_count()
-        return cpus
-
-    @staticmethod
-    def get_avaiable_cpus():
-        "Print avaiable cpus"
-        print(f"Avaiable CPUs: {CPU.count_cpus()}")
-
-    def check(self):
-        "Check if aviable cpus could handle requested cpus. If not use max cpus available"
-        if self.cpus > CPU.count_cpus():
-            self.cpus = CPU.count_cpus()
 
 
 class Parser:
@@ -99,7 +76,7 @@ class Parser:
     def prepare_evidence(self, dataset):
 
         # Calculate median score and 3 top scores per targetId and diseaseId pair
-        print("Calculating median and 3 top scores of evidence data set")
+        print("Calculating median and 3 top scores of evidence dataset")
         dataset.df = dataset.df.groupby(["targetId", "diseaseId"]).agg({"score": ['mean', lambda s: sorted(list(s), reverse=True)[:3]]}).reset_index()
         columns_name =("targetId", 'diseaseId', 'median', 'top3_score')
         dataset.df.columns = list(map(''.join, columns_name))
@@ -125,9 +102,8 @@ class Parser:
         self.data_transformed = ev_ta_di_df.sort_values("median").reset_index(drop=True)
 
     def export_data(self, out_file):
-        print(f"Exporting Results to JSON file: {out_file}")
         self.data_transformed.to_json(out_file, orient="records")
-        print(f"Data exported to {out_file}")
+        print(f"JSON format results exported to {out_file}")
 
     def target_target_pair(self):
 

@@ -1,6 +1,6 @@
 import os
 import argparse
-from parser import Parser, CPU
+from code.parser import Parser, CPU
 
 def parse_arguments():
     """Command line arguments parser"""
@@ -19,11 +19,11 @@ def main():
     parser = Parser(args.input_dir, args.cpus_use)
 
     # Check if exist input directory
-    if not(os.path.exists(args.in):
-        raise FileNotFoundError(f'{args.in} directory does not exists')
+    if not(os.path.exists(args.input_dir)):
+        raise FileNotFoundError(f'{args.input_dir} directory does not exists')
 
     # Check if exist evidence, targets, diseases directories
-    data_directories = os.listdir(args.in)
+    data_directories = os.listdir(args.input_dir)
     for dir in ["evidence", "targets", "diseases"]:
         if dir not in data_directories:
             raise FileNotFoundError(f'{dir} directory does not exists')

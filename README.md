@@ -38,7 +38,30 @@ cd OT-ETL-Challenge
 <a name="2"></a>
 ## 2) Download data sets
 
-You have 2 optiones to get the evidence, targets and diseases datasets. The diretory tree you'll get is:
+
+You have 2 optiones to get the datasets, manually and using a script script. On "data" folder you'll find logs for each dataset. After donwoad the diretory tree shoudl look like:
+
+
+```bash
+├── code
+├── data
+│   ├── evidence
+│   │   └── *.json
+│   ├── evidence.log
+│   ├── targets
+│   │   └── *.json
+│   ├── targets.log
+│   ├── diseases
+│   │   └── *.json
+│   └── diseases.log
+├── download_datasets.sh
+├── LICENCE
+└── .main.py
+└── README.md
+└── requirmenet.txt
+```
+
+Download data sets could take beetween 25 to 45 minutes depending on the internet speed.
 
 ### 2 options:
 
@@ -51,32 +74,35 @@ mkdir -p $data_dir/{evidence,targets,diseases}
 
 Get data sets. Execute:
 ```bash
-wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/evidence --accept='*.json' -r ftp://ftp.ebi.ac.uk/pub/databases/opentargets/platform/21.11/output/etl/json/evidence/sourceId=eva/
-wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/diseases --accept='*.json' -r ftp://ftp.ebi.ac.uk/pub/databases/opentargets/platform/21.11/output/etl/json/diseases/
-wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/targets --accept='*.json' -r ftp://ftp.ebi.ac.uk/pub/databases/opentargets/platform/21.11/output/etl/json/targets/
+wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/evidence --accept='*.json' -r ftp://ftp.ebi.ac.uk/pub/databases/opentargets/platform/21.11/output/etl/json/evidence/sourceId=eva/ -o $data_dir/evidence.log
+wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/targets --accept='*.json' -r ftp://ftp.ebi.ac.uk/pub/databases/opentargets/platform/21.11/output/etl/json/targets/ -o $data_dir/targets.log
+wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/diseases --accept='*.json' -r ftp://ftp.ebi.ac.uk/pub/databases/opentargets/platform/21.11/output/etl/json/diseases/ -o $data_dir/diseases.log
 ```
 
-##### 2) Using download_datases.sh script
+##### 2) Using script
+
+The execution will be a background paralell process for each dataset (faster than manuall option).
 
 Add permisions. Execute:
 ```bash
-chmod 700 download_datases.sh
+chmod 700 download_datasets.sh
 ```
 
 Run script. Execute:
 ```bash
-./download_datases.sh
+./download_datasets.sh
 ```
 
-This script is going to create a folder labeled "data" to get evidence, target and disease datasets. The execution will be a background paralell process for each dataset. On "data" folder you'll find logs for each dataset. In the logs you can check if all the files were sucessfully downloaded and if execution was done/finished. This could take beetween 20 to 40 minutes depending on the internet speed.
+##### Check logs
 
+In the logs you can check if all the files are sucessfully downloaded and if execution is finished.
 
 To know if download datasets finish. On "data" folder execute:
 ```bash
 grep -e "FINISHED" evidence.log targets.log diseases.log
 ```
 
-Check for donwload errors. On "data" folder execute:
+Check for download errors. On "data" folder execute:
 ```bash
 grep -e "error" -e "fail" evidence.log targets.log diseases.log | awk -F: '{print "Line "$1": "$2}'
 ```
@@ -102,8 +128,6 @@ pip install -r requirement.txt
 <a name="4"></a>
 ## 4) Running application
 
-##### Run main.py script
-
 Usage options:
 | Flag       | Description                                 | Default  |
 |:-----------:|:-------------------------------------------:|:---------:|
@@ -128,3 +152,5 @@ Get how many CPUs are available on your execution environment. Execute:
 ```bash
 python main.py -nc
 ```
+##### Notes
+If you select more cpus than you execution environment has the application takes the max possible.
