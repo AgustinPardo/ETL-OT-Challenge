@@ -2,17 +2,19 @@
 
 ## Prerequistes
 Python 3.9.6
+
 git
+
 wget
 
-#### wget instalation
+### wget instalation:
 Source info to installing wget:
 
 Linux : https://www.tecmint.com/install-wget-in-linux/
 
 Mac : https://www.maketecheasier.com/install-wget-mac/
 
-#### Follow the next steps to get ready to run the application:
+## Follow the next steps to get ready to run the application:
 1 [Get source code](#1)
 
 2 [Download data sets](#2)
