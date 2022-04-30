@@ -33,6 +33,8 @@ cd OT-ETL-Challenge
 <a name="2"></a>
 ## 2) Download data sets
 
+You have 2 optiones to get the evidence, targets and diseases datasets. The diretory tree you'll get is:
+
 ### 2 options:
 
 ##### 1) Manually

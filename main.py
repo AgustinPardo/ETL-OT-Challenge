@@ -1,3 +1,4 @@
+import os
 import argparse
 from parser import Parser, CPU
 
@@ -16,6 +17,17 @@ def main():
     parser=parse_arguments()
     args=parser.parse_args()
     parser = Parser(args.input_dir, args.cpus_use)
+
+    # Check if exist input directory
+    if not(os.path.exists(args.in):
+        raise FileNotFoundError(f'{args.in} directory does not exists')
+
+    # Check if exist evidence, targets, diseases directories
+    data_directories = os.listdir(args.in)
+    for dir in ["evidence", "targets", "diseases"]:
+        if dir not in data_directories:
+            raise FileNotFoundError(f'{dir} directory does not exists')
+    
     if args.nc:
         CPU.get_avaiable_cpus()
     if args.etl:
