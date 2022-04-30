@@ -131,7 +131,7 @@ class Parser:
 
     def target_target_pair(self):
 
-        # In case target-target pair option is run alone
+        # In case target-target (-tt) pair option is run alone
         if self.evidence.df.empty:
             self.parse_data(self.evidence)
             self.evidence.df = self.evidence.df.drop_duplicates(["targetId", "diseaseId"]).reset_index()       
