@@ -76,6 +76,7 @@ On "OT-ETL-Challenge" folder. Execute:
 ```bash
 python -m venv etl
 ```
+
 ##### 2) Activate virtual environment. Execute:
 ```bash
 source etl/bin/activate
