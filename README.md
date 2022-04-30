@@ -21,12 +21,12 @@ Clone source code. Execute:
 git clone https://github.com/AgustinPardo/OT-ETL-Challenge
 ```
 
-## 2) Download data sets
-
 Go to repository folder. Execute:
 ```bash
 cd OT-ETL-Challenge
 ```
+
+## 2) Download data sets
 
 ### 2 options:
 
