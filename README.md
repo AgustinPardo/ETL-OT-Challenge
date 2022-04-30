@@ -7,7 +7,9 @@ wget
 
 #### wget instalation
 Source info to installing wget:
+
 Linux : https://www.tecmint.com/install-wget-in-linux/
+
 Mac : https://www.maketecheasier.com/install-wget-mac/
 
 ## Get source code
