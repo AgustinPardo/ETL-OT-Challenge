@@ -72,8 +72,8 @@ class TestMetadata(unittest.TestCase):
     def test_duplicated_rows(self):
         """Test if exist duplicated rows"""
 
-        self.assertEqual(self.target_df.duplicated().all(), False)
-        self.assertEqual(self.disease_df.duplicated().all(), False)
+        self.assertEqual(self.target_df.duplicated().any(), False)
+        self.assertEqual(self.disease_df.duplicated().any(), False)
 
 if __name__ == "__main__":
     unittest.main()
