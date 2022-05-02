@@ -7,6 +7,7 @@ from code.cpu import CPU
 
 
 class DataSet:
+    """Class to store dataset data"""
 
     def __init__(self, path, name, fields):
         self.path = path+"/"+name
@@ -16,6 +17,7 @@ class DataSet:
 
 
 class Parser:
+    """Class to parse data from evidence, targets and diseases datasets"""
 
     def __init__(self, data_path, cpus_use):
         self.evidence = DataSet(data_path, "evidence", ["targetId", "diseaseId", "score"])
@@ -24,6 +26,8 @@ class Parser:
         self.cpus = CPU(cpus_use).cpus
 
     def get_data(self, path, files, queue, args):
+        """Open each file of dataset, read as json and append result in a Queue"""
+
         list_for_df = []
         for file in files:
             file=open(path+"/"+file)
@@ -31,7 +35,7 @@ class Parser:
             file.close()
             for line in readlines:
                 dict_to_list = json.loads(line)
-                # Keep only args requested data
+                # Keep only args requested
                 dict_to_list = {x:dict_to_list[x] for x in args}
                 list_for_df.append(dict_to_list)
 
@@ -39,6 +43,7 @@ class Parser:
         queue.put(list_for_df)
 
     def parallel_get_data(self, path, files, args):
+        """Create chunks of files, run get_data on parallel and create a Queue to store the results"""
 
         # Number of CPUs
         num_cpus = self.cpus
@@ -67,6 +72,7 @@ class Parser:
         return all_results
 
     def parse_data(self, dataset):
+        """Get list of dataset files and parse them in a pandas DataFrame"""
 
         print(f"Reading {dataset.name} dataset")
         files = os.listdir(dataset.path)
@@ -75,6 +81,7 @@ class Parser:
         dataset.df = pd.DataFrame(data)
 
     def prepare_evidence(self, dataset):
+        """Calculate median and 3 top scores of evidece dataset"""
 
         # Calculate median score and 3 top scores per targetId and diseaseId pair
         print("Calculating median and 3 top scores of evidence dataset")
@@ -83,6 +90,7 @@ class Parser:
         dataset.df.columns = list(map(''.join, columns_name))
 
     def transform_data(self):
+        """Merge evidence with target and diseases datasets. Sort by median score"""
 
         print(f"CPUs in use: {self.cpus}")  
         self.parse_data(self.evidence)
@@ -104,12 +112,15 @@ class Parser:
         self.data_transformed = ev_ta_di_df.sort_values("median").reset_index(drop=True)
 
     def export_data(self, out_file):
+        """Export calculated statistics on the datasets"""
+
         self.data_transformed.to_json(out_file, orient="records")
         print(f"JSON format results exported to {out_file}")
 
     def target_target_pair(self):
+        """Target-Target pair sharing connection with atleast two diseases calculation"""
 
-        # In case target-target (-tt) pair option is run alone
+        # In case target-target pair option(-tt) is run alone
         if self.evidence.df.empty:
             self.parse_data(self.evidence)
             self.evidence.df = self.evidence.df.drop_duplicates(["targetId", "diseaseId"]).reset_index()       
@@ -126,4 +137,5 @@ class Parser:
         # Count how many pair-pair diseases have more than 2 targetId conection. Divide by 2 to prevent count two times same pair-pair conection
         tt_pair_count = tt_pair[tt_pair["count"] >= 2]["count"].count() / 2
         print(f"Target-Target pair sharing connection with atleast two diseases {int(tt_pair_count)}")
+        
         return tt_pair_count

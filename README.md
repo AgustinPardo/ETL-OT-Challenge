@@ -17,6 +17,8 @@ wget
 
 4 [Running application](#4)
 
+5 [Testing](#5)
+
 <a name="1"></a>
 ## 1) Get source code
 
@@ -160,24 +162,27 @@ python main.py -h
 ## 5) Testing
 
 Execute on "test" directory. There are 3 types of tests:
-1) Test if the datasets used as input have format and quality expected to run correctly the application
+1) Test if the datasets used as input have format and quality expected to run correctly the application.
 
 Execute:
 ```bash
 python test_metadata.py -v
 ```
 
-2) Test the time performance of the -etl and -tt options on your environment. This is going to run the application 3 times using processors in an incrental way, starting with 1 and finalize using the max CPUs availables. At the end you'll the execution time taken per CPUs used.
+1) Test the time performance of run -etl(transform_data), -tt(target_target_pair) and export options of the application. It iterates trought each number of processors until the max CPU available measuring the time spend. From each CPU iteration it evaluates the code 3 times (3 laps) and calculate the mean time of them. At the end of the process you'll get a summary of the execution time spend based on the Number of CPUs used.
 
 Execute:
 ```bash
 python test_performance.py
 ```
 
-1) Test the process of calculations and trasnforming data using a mock data set (Mini data set is beneficial to purge bugs).
+1) Test data trasnformation and calculatations using mock dataset (Mini data set is beneficial to debug expected behaviours).
 
 Execute:
 ```bash
 python test_transform.py -v
 ```
 
+## Technical test results
+* "result.json" file contains the results request on the tech test instructions document.
+* The number of Target-Target pair sharing connection with atleast two diseases is 17659

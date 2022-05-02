@@ -6,12 +6,14 @@ import unittest
 from code.parser import Parser
 from code.cpu import CPU
 
+
 class TestMetadata(unittest.TestCase):
-    """Test datasets metadata format and quality input as the parser expects to oprate correctly"""
+    """Test datasets metadata format and quality inputs as required by parser application to work properly"""
 
     @classmethod
     def setUpClass(self):
         """Create Parser for later use in the tests"""
+
         self.parser = Parser("../data", CPU.count_cpus())
         self.parser.parse_data(self.parser.evidence)
         self.parser.parse_data(self.parser.target)
@@ -22,19 +24,22 @@ class TestMetadata(unittest.TestCase):
         self.disease_df = self.parser.disease.df
 
     def test_empty_dataframe(self):
-        """Test if a dataframe is empty"""
+        """Test if DataFrame is empty"""
+
         self.assertEqual(self.evidence_df.empty, False)
         self.assertEqual(self.target_df.empty, False)
         self.assertEqual(self.disease_df.empty, False)
 
     def test_columns_exist(self):
-        """Test existing columns"""
+        """Test if needed columns exist"""
+
         self.assertEqual(list(self.evidence_df), ['targetId', 'diseaseId', 'score'])
         self.assertEqual(list(self.target_df.columns), ["id", "approvedSymbol"])
         self.assertEqual(list(self.disease_df.columns), ["id", "name"])
     
     def test_columns_type(self):
         """Test type of columns"""
+
         self.assertEqual(self.evidence_df.score.dtype, float)
         self.assertEqual(self.evidence_df.targetId.dtype.name, "object")
         self.assertEqual(self.evidence_df.diseaseId.dtype.name, "object")
@@ -43,6 +48,7 @@ class TestMetadata(unittest.TestCase):
 
     def test_empty_values(self):
         """Test if exist empty values on the columns"""
+
         self.assertEqual((self.evidence_df.score == '').any(), False)
         self.assertEqual((self.evidence_df.targetId == '').any(), False)
         self.assertEqual((self.evidence_df.diseaseId == '').any(), False)
@@ -51,6 +57,7 @@ class TestMetadata(unittest.TestCase):
         
     def test_null_values(self):
         """Test if exist null values on the columns"""
+
         self.assertEqual(self.evidence_df.score.isnull().any(), False)
         self.assertEqual(self.evidence_df.targetId.isnull().any(), False)
         self.assertEqual(self.evidence_df.diseaseId.isnull().any(), False)
@@ -59,10 +66,12 @@ class TestMetadata(unittest.TestCase):
 
     def test_score_range(self):
         """Test score column range between 0 and 1"""
+
         self.assertEqual(self.evidence_df.score.between(0,1).all(), True)
 
     def test_duplicated_rows(self):
-        """Test if exist duplcated rows"""
+        """Test if exist duplicated rows"""
+
         self.assertEqual(self.target_df.duplicated().all(), False)
         self.assertEqual(self.disease_df.duplicated().all(), False)
 

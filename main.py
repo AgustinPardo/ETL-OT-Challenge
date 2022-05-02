@@ -2,6 +2,7 @@ import os
 import argparse
 from code.parser import Parser, CPU
 
+
 def parse_arguments():
     """Command line arguments parser"""
     parser = argparse.ArgumentParser(description="ETL pipeline")
@@ -13,8 +14,9 @@ def parse_arguments():
     parser.add_argument("-tt", action="store_true", help="Count how many target-target pairs share a connection to at least two diseases")
     return parser
 
+
 def main():
-    """ """
+    """Application manage function"""
     parser=parse_arguments()
     args=parser.parse_args()
     parser = Parser(args.input_dir, args.cpus_use)

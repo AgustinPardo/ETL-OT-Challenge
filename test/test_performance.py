@@ -7,6 +7,7 @@ from code.cpu import CPU
 import time
 
 class HiddenPrints:
+    """Utility Class to prevent prints""" 
 
     def __enter__(self):
         self._original_stdout = sys.stdout
@@ -18,11 +19,18 @@ class HiddenPrints:
 
 
 if __name__ == '__main__':
+    """This test module is going to run -etl(transform_data), -tt(target_target_pair) and export options of the application. 
+        It iterates trought each number of processors until the max CPU available measuring the time spend.
+        From each CPU iteration it evaluates the code 3 times (3 laps) and calculate the mean time of them.
+        At the end of the process you'll get a summary of the execution time spend based on the Number of CPUs used.
+    """
 
+    # Number of laps
     NUM_EVAL_LAPS = 3
     MAX_CPU_AVAILABLE = CPU.count_cpus()
 
     def evaluate(cpus):
+        """Code o be evaluated each lap. -etl and -tt options are evaluated"""
         with HiddenPrints():
             parser = Parser("../data", cpus)
             parser.transform_data()
