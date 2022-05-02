@@ -32,7 +32,7 @@ cd OT-ETL-Challenge
 <a name="2"></a>
 ## 2) Download datasets
 
-You have 2 optiones to get the datasets, manually and using a bash script. After execute you'll find on the "data" directory only .json file format datasets needed to execute the application and logs for each dataset. The directory tree should look like:
+You have 2 optiones to get the datasets, manually and using a bash script. After execute you'll find on the "data" directory JSON file format datasets needed to execute the application and logs for each dataset. The directory tree should look like:
 
 ```
 ├── code
