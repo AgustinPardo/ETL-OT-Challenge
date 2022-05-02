@@ -39,7 +39,7 @@ class TestTransformation(unittest.TestCase):
         """Check target_target_pair value on mock datasets"""
 
         with HiddenPrints():
-            self.assertEqual(self.parser.target_target_pair(), 2)
+            self.assertEqual(self.parser.target_target_pair(), 4)
 
 if __name__ == "__main__":
     unittest.main()

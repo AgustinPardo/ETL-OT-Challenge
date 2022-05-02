@@ -1,11 +1,9 @@
 # Open Targets Software Developer Technical Test
 
 ## Prerequistes
-Python 3.9.6
-
-git
-
-wget
+* Python 3.9.6
+* git
+* wget
 
 
 ## Follow the next steps to get ready to run the application:
@@ -34,8 +32,7 @@ cd OT-ETL-Challenge
 <a name="2"></a>
 ## 2) Download datasets
 
-You have 2 optiones to get the datasets, manually and using a bash script. After execute you will find on the "data" directory the datasets needed to execute the application and logs for each dataset. The directory tree should look like:
-
+You have 2 optiones to get the datasets, manually and using a bash script. After execute you'll find on the "data" directory the datasets needed to execute the application and logs for each dataset. The directory tree should look like:
 
 ```
 ├── code
@@ -61,7 +58,8 @@ Download datasets could take beetween 25 to 45 minutes depending on the internet
 
 ### 2 options:
 
-##### 1) Manually
+##### Option 1: Manually
+
 Create directories. Execute:
 ```bash
 data_dir=data
@@ -75,9 +73,9 @@ wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/targets
 wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/diseases --accept='*.json' -r ftp://ftp.ebi.ac.uk/pub/databases/opentargets/platform/21.11/output/etl/json/diseases/ -o $data_dir/diseases.log
 ```
 
-##### 2) Using script
+##### Option 2: Using script
 
-The execution will be a background paralell process for each dataset (faster than manuall option).
+The execution will be a background paralell process for each dataset(faster than manuall option).
 
 Add permisions. Execute:
 ```bash
@@ -185,4 +183,4 @@ python test_transform.py -v
 
 ## Technical test results
 * "result.json" file contains the results request on the tech test instructions document.
-* The number of Target-Target pair sharing connection with atleast two diseases is 17659
+* The number of target-target pair sharing connection with atleast two diseases is 350414.

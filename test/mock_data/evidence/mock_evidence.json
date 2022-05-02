@@ -14,3 +14,4 @@
 {"targetId":"TA50", "diseaseId":"DI50", "score":0.5}
 {"targetId":"TA60", "diseaseId":"DI50", "score":0.5}
 {"targetId":"TA60", "diseaseId":"DI60", "score":0.5}
+{"targetId":"TA60", "diseaseId":"DI10", "score":0.5}

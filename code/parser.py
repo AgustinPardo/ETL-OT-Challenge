@@ -126,15 +126,15 @@ class Parser:
             self.evidence.df = self.evidence.df.drop_duplicates(["targetId", "diseaseId"]).reset_index()       
 
         # Join on targetId
-        tt_pair = pd.merge(self.evidence.df, self.evidence.df, left_on="targetId", right_on="targetId")
+        tt_pair = pd.merge(self.evidence.df, self.evidence.df, left_on="diseaseId", right_on="diseaseId")
 
         # Remove all the rows having same diseasesId
-        tt_pair = tt_pair[tt_pair["diseaseId_x"] != tt_pair["diseaseId_y"]]
+        tt_pair = tt_pair[tt_pair["targetId_x"] != tt_pair["targetId_y"]]
 
-        # Count how pair-pair diseases are conected to a targetId
-        tt_pair = tt_pair.groupby(['diseaseId_x', 'diseaseId_y']).size().reset_index(name="count")
-
-        # Count how many pair-pair diseases have more than 2 targetId conection. Divide by 2 to prevent count two times same pair-pair conection
+        # Count how many diseases are connected to both pair of targets
+        tt_pair = tt_pair.groupby(['targetId_x', 'targetId_y']).size().reset_index(name="count")
+        
+        # Count how many pair of targets have more than 2 diseases connected. Divide by 2 to prevent count two times same pair-pair connection
         tt_pair_count = tt_pair[tt_pair["count"] >= 2]["count"].count() / 2
         print(f"Target-Target pair sharing connection with atleast two diseases {int(tt_pair_count)}")
         
