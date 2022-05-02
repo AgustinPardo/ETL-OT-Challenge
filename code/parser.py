@@ -17,7 +17,7 @@ class DataSet:
 
 
 class Parser:
-    """Class to parse data from evidence, targets and diseases datasets"""
+    """Class to parse from evidence, targets and diseases datasets"""
 
     def __init__(self, data_path, cpus_use):
         self.evidence = DataSet(data_path, "evidence", ["targetId", "diseaseId", "score"])
@@ -125,10 +125,10 @@ class Parser:
             self.parse_data(self.evidence)
             self.evidence.df = self.evidence.df.drop_duplicates(["targetId", "diseaseId"]).reset_index()       
 
-        # Join on targetId
+        # Join on diseaseId
         tt_pair = pd.merge(self.evidence.df, self.evidence.df, left_on="diseaseId", right_on="diseaseId")
 
-        # Remove all the rows having same diseasesId
+        # Remove all the rows having same targetId
         tt_pair = tt_pair[tt_pair["targetId_x"] != tt_pair["targetId_y"]]
 
         # Count how many diseases are connected to both pair of targets

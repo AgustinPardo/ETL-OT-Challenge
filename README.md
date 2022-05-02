@@ -58,7 +58,7 @@ Download datasets could take beetween 25 to 45 minutes depending on the internet
 
 ### 2 options:
 
-##### Option 1: Manually
+**Option 1: Manually**
 
 Create directories. Execute:
 ```bash
@@ -73,7 +73,7 @@ wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/targets
 wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/diseases --accept='*.json' -r ftp://ftp.ebi.ac.uk/pub/databases/opentargets/platform/21.11/output/etl/json/diseases/ -o $data_dir/diseases.log
 ```
 
-##### Option 2: Using script
+**Option 2: Using script**
 
 The execution will be a background paralell process for each dataset(faster than manual option).
 
@@ -161,21 +161,21 @@ python main.py -h
 ## 5) Testing
 
 Execute on "test" directory. There are 3 types of tests:
-1) Test if the datasets used as input have format and quality expected to run correctly the application.
+* Test if the datasets used as input have format and quality expected to run correctly the application.
 
 Execute:
 ```bash
 python test_metadata.py -v
 ```
 
-1) Test the time performance of -etl(transform_data), -tt(target_target_pair) and export options of the application. Iterates trought each number of processors until the max CPU available measuring the time spend. From each CPU iteration it evaluates the code 3 times (3 laps) and calculate the mean time of them. Finally you'll get a summary of the execution time spend based on the number of CPUs used.
+* Test the time performance of -etl(transform_data), -tt(target_target_pair) and export options of the application. Iterates trought each number of processors until the max CPU available measuring the time spend. From each CPU iteration it evaluates the code 3 times (3 laps) and calculate the mean time of them. Finally you'll get a summary of the execution time spend based on the number of CPUs used.
 
 Execute:
 ```bash
 python test_performance.py
 ```
 
-1) Test data trasnformation and calculatations using mock dataset (Mini dataset is beneficial to debug expected behaviours).
+* Test data trasnformation and calculatations using mock dataset (Mini dataset is beneficial to debug expected behaviours).
 
 Execute:
 ```bash
@@ -184,5 +184,5 @@ python test_transform.py -v
 
 ## Challenge results
 * "result.json" file contains the results request on the tech test instructions document.
-* The number of target-target pair sharing connection with atleast two diseases is 350414.
+* The number of target-target pair sharing connection with at least two diseases is 350414.
 * You can get both results running the application option -etl and -tt.
