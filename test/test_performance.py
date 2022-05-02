@@ -22,7 +22,7 @@ if __name__ == '__main__':
     """This test module is going to run -etl(transform_data), -tt(target_target_pair) and export options of the application. 
         It iterates trought each number of processors until the max CPU available measuring the time spend.
         From each CPU iteration it evaluates the code 3 times (3 laps) and calculate the mean time of them.
-        At the end of the process you'll get a summary of the execution time spend based on the Number of CPUs used.
+        At the end of the process you'll get a summary of the execution time spend based on the number of CPUs used.
     """
 
     # Number of laps

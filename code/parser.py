@@ -43,7 +43,7 @@ class Parser:
         queue.put(list_for_df)
 
     def parallel_get_data(self, path, files, args):
-        """Create chunks of files, run get_data on parallel and create a Queue to store the results"""
+        """Create chunks of files, run get_data on parallel for each chunk and create a Queue to store the results"""
 
         # Number of CPUs
         num_cpus = self.cpus
@@ -64,7 +64,7 @@ class Parser:
             process.start()
             chunk_r = chunk_l
 
-        # Collect the queue results
+        # Collect Queue results
         all_results = []
         for _ in range(0, num_cpus):
             all_results+=queue.get()
@@ -112,7 +112,7 @@ class Parser:
         self.data_transformed = ev_ta_di_df.sort_values("median").reset_index(drop=True)
 
     def export_data(self, out_file):
-        """Export calculated statistics on the datasets"""
+        """Export calculated statistics to JSON file"""
 
         self.data_transformed.to_json(out_file, orient="records")
         print(f"JSON format results exported to {out_file}")
@@ -133,9 +133,9 @@ class Parser:
 
         # Count how many diseases are connected to both pair of targets
         tt_pair = tt_pair.groupby(['targetId_x', 'targetId_y']).size().reset_index(name="count")
-        
+
         # Count how many pair of targets have more than 2 diseases connected. Divide by 2 to prevent count two times same pair-pair connection
         tt_pair_count = tt_pair[tt_pair["count"] >= 2]["count"].count() / 2
-        print(f"Target-Target pair sharing connection with atleast two diseases {int(tt_pair_count)}")
+        print(f"Number of Target-Target pairs sharing connection with atleast two diseases: {int(tt_pair_count)}")
         
         return tt_pair_count

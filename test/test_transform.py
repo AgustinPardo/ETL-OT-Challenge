@@ -20,7 +20,7 @@ class HiddenPrints:
 
 
 class TestTransformation(unittest.TestCase):
-    """Test trasformation process on minimal mock datasets"""
+    """Test trasformation process"""
 
     @classmethod
     def setUpClass(self):

@@ -2,7 +2,7 @@ from multiprocessing import cpu_count
 
 
 class CPU:
-    """Class to store and check cpu info""" 
+    """Class to store and check cpu processors usage info""" 
 
     def __init__(self, cpus_number):        
         self.cpus = int(cpus_number)
@@ -24,6 +24,7 @@ class CPU:
     def check(self):
         """Check CPUs input value"""
 
+        # If selected CPUs are less than 1 raise an error.
         if self.cpus < 1:
             raise Exception(f'{self.cpus} is not a valid CPUs number usage')
         # If available CPUs could not handle requested CPUs, use max available

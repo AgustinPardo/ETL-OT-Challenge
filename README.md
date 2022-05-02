@@ -32,7 +32,7 @@ cd OT-ETL-Challenge
 <a name="2"></a>
 ## 2) Download datasets
 
-You have 2 optiones to get the datasets, manually and using a bash script. After execute you'll find on the "data" directory the datasets needed to execute the application and logs for each dataset. The directory tree should look like:
+You have 2 optiones to get the datasets, manually and using a bash script. After execute you'll find on the "data" directory only .json file format datasets needed to execute the application and logs for each dataset. The directory tree should look like:
 
 ```
 ├── code
@@ -75,7 +75,7 @@ wget --no-parent --level=1 --no-directories --directory-prefix=$data_dir/disease
 
 ##### Option 2: Using script
 
-The execution will be a background paralell process for each dataset(faster than manuall option).
+The execution will be a background paralell process for each dataset(faster than manual option).
 
 Add permisions. Execute:
 ```bash
@@ -155,6 +155,7 @@ python main.py -h
 ##### Notes
 * If you select more CPUs than you execution environment has the application takes the max possible.
 * You can run both -etl and -tt options together.
+* If another directory is selected(-in) keep "data" folder distribution by evidence, target and diseases.
 
 
 ## 5) Testing
@@ -167,20 +168,21 @@ Execute:
 python test_metadata.py -v
 ```
 
-1) Test the time performance of run -etl(transform_data), -tt(target_target_pair) and export options of the application. It iterates trought each number of processors until the max CPU available measuring the time spend. From each CPU iteration it evaluates the code 3 times (3 laps) and calculate the mean time of them. At the end of the process you'll get a summary of the execution time spend based on the Number of CPUs used.
+1) Test the time performance of -etl(transform_data), -tt(target_target_pair) and export options of the application. Iterates trought each number of processors until the max CPU available measuring the time spend. From each CPU iteration it evaluates the code 3 times (3 laps) and calculate the mean time of them. Finally you'll get a summary of the execution time spend based on the number of CPUs used.
 
 Execute:
 ```bash
 python test_performance.py
 ```
 
-1) Test data trasnformation and calculatations using mock dataset (Mini data set is beneficial to debug expected behaviours).
+1) Test data trasnformation and calculatations using mock dataset (Mini dataset is beneficial to debug expected behaviours).
 
 Execute:
 ```bash
 python test_transform.py -v
 ```
 
-## Technical test results
+## Challenge results
 * "result.json" file contains the results request on the tech test instructions document.
 * The number of target-target pair sharing connection with atleast two diseases is 350414.
+* You can get both results running the application option -etl and -tt.
