@@ -1,0 +1,16 @@
+{"targetId":"TA10", "diseaseId":"DI10", "score":0.8}
+{"targetId":"TA10", "diseaseId":"DI10", "score":0.6}
+{"targetId":"TA10", "diseaseId":"DI10", "score":0.4}
+{"targetId":"TA10", "diseaseId":"DI10", "score":0.2}
+{"targetId":"TA10", "diseaseId":"DI20", "score":0.1}
+{"targetId":"TA20", "diseaseId":"DI20", "score":0.5}
+{"targetId":"TA30", "diseaseId":"DI10", "score":0.01}
+{"targetId":"TA40", "diseaseId":"DI10", "score":0.1}
+{"targetId":"TA40", "diseaseId":"DI40", "score":0.3}
+{"targetId":"TA40", "diseaseId":"DI40", "score":0.4}
+{"targetId":"TA40", "diseaseId":"DI20", "score":0.5}
+{"targetId":"TA40", "diseaseId":"DI50", "score":0.5}
+{"targetId":"TA50", "diseaseId":"DI10", "score":0.5}
+{"targetId":"TA50", "diseaseId":"DI50", "score":0.5}
+{"targetId":"TA60", "diseaseId":"DI50", "score":0.5}
+{"targetId":"TA60", "diseaseId":"DI60", "score":0.5}

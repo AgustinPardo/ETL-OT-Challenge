@@ -5,6 +5,7 @@ import math
 from multiprocessing import Process, Queue
 from code.cpu import CPU
 
+
 class DataSet:
 
     def __init__(self, path, name, fields):
@@ -82,6 +83,7 @@ class Parser:
         dataset.df.columns = list(map(''.join, columns_name))
 
     def transform_data(self):
+
         print(f"CPUs in use: {self.cpus}")  
         self.parse_data(self.evidence)
         self.prepare_evidence(self.evidence)
@@ -115,9 +117,13 @@ class Parser:
         # Join on targetId
         tt_pair = pd.merge(self.evidence.df, self.evidence.df, left_on="targetId", right_on="targetId")
 
-        # Remove all the rows having same diseasesID
-        tt_pair_dif_diseases = tt_pair[tt_pair["diseaseId_x"] != tt_pair["diseaseId_y"]]
+        # Remove all the rows having same diseasesId
+        tt_pair = tt_pair[tt_pair["diseaseId_x"] != tt_pair["diseaseId_y"]]
 
-        # Count each pair and divide by two to avoid double count
-        tt_pair_count = tt_pair_dif_diseases["targetId"].count() / 2
+        # Count how pair-pair diseases are conected to a targetId
+        tt_pair = tt_pair.groupby(['diseaseId_x', 'diseaseId_y']).size().reset_index(name="count")
+
+        # Count how many pair-pair diseases have more than 2 targetId conection. Divide by 2 to prevent count two times same pair-pair conection
+        tt_pair_count = tt_pair[tt_pair["count"] >= 2]["count"].count() / 2
         print(f"Target-Target pair sharing connection with atleast two diseases {int(tt_pair_count)}")
+        return tt_pair_count

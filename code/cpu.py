@@ -18,7 +18,10 @@ class CPU:
         print(f"Avaiable CPUs: {CPU.count_cpus()}")
 
     def check(self):
-        "Check if aviable cpus could handle requested cpus. If not use max cpus available"
+        """Check CPUs usage input value"""
+        if self.cpus < 1:
+            raise Exception(f'{self.cpus} is not a valid CPUs number usage')
+        # If available CPUs could not handle requested CPUs, use max available
         available_cpus = CPU.count_cpus()
         if self.cpus > available_cpus:
             self.cpus = available_cpus
